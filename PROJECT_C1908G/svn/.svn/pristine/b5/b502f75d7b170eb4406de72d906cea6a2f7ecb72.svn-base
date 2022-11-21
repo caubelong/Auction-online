@@ -1,0 +1,75 @@
+<?php
+
+require_once('database.php');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Category</title>
+    <style>
+        table {
+        border-collapse: collapse;
+        vertical-align: top;
+        }
+
+        table.list {
+        width: 80%;
+        }
+
+        table.list tr td {
+        border: 1px solid #999999;
+        
+        }
+
+        table.list tr th {
+        border: 1px solid #000;
+        background: #A8D4FF;
+        color: white;
+        text-align: left;
+        }
+    </style>
+    <link href="bs4/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<?php
+    include_once "header_category.php";
+?>
+<div class="container-fluid">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>STT</th>
+            <th>Category Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>&nbsp;&nbsp;</th>
+        </tr>
+        </thead>
+        </tr>
+
+        <?php
+        $category_set = find_all_categorys();
+        $count = mysqli_num_rows($category_set);
+        for ($i = 0; $i < $count; $i++):
+            $category = mysqli_fetch_assoc($category_set);
+            ?>
+            <tr>
+                <td><?php echo $category['CategoryID']; ?></td>
+                <td><?php echo $category['Name']; ?></td>
+                <td><a href="<?php echo 'edit.php?id='.$category['CategoryID']; ?>">Edit</a></td>
+                <td><a href="<?php echo 'delete.php?id='.$category['CategoryID']  ; ?>">Delete</a></td>
+            </tr>
+        <?php
+        endfor;
+        mysqli_free_result($category_set);
+        ?>
+    </table>
+
+</body>
+<script src="bs4/bootstrap.min.js"></script>
+<script src="bs4/jquery-3.4.1.min.js"></script>
+</html>
+<?php
+db_disconnect($db);
+?>

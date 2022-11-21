@@ -1,0 +1,96 @@
+body{
+  font-family: 'Poppins', sans-serif;
+ 
+}
+.navbar .nav-link{
+  font-size: 14px;
+  text-transform: uppercase;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+.navbar-toggler{
+  outline: none !important;
+  }
+  .bg-black{
+    background: #000;
+  }
+  .slide{
+    width: 100%;
+  }
+  /* ======Slider======== */
+  /* .carousel-item{
+   height: 600px;
+      }
+.carousel-image-1{
+  background: linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('../IMG/1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+/* .carousel-image-2{
+  background: linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('../IMG/2.jpg');
+  background-size: cover;
+}
+.carousel-image-3{
+  background: linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('../IMG/3.jpg');
+  background-size: cover;
+/* } */
+.title-color{
+  color:#fff;
+}
+.btn-color{
+    background-color: black;
+  color:#fff;
+  opacity: .7;
+  transition-timing-function: ease-in;
+}
+.btn-color:hover{
+  background:#fff;
+  color:black;
+  transition-timing-function: ease-in-out;
+}
+@media (max-width:  575px) {
+.carousel-caption{
+  font-size:8px;
+}
+.carousel-caption h1{
+  font-size:400%;
+}
+.carousel-caption .btn{
+  font-size:250%;
+  padding: 4px 8px;
+}
+}
+
+
+.dropdown-item:hover{
+  color: #000!important;
+  background-color: #FFF!important;
+}
+.dropdown-item{
+  color: #FFF!important;
+}
+.menunav{
+  color:#000!important;
+
+}
+
+/*Prime Product Section */
+#about-sec{
+margin-top: 25px;
+}
+.text-color{
+  color: #000;
+}
+.watch-img{
+  margin-top: 35px;
+}
+.footer{
+  background: linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),url('../IMG/1.jpg');
+  background-size: cover;
+  color: #fff;
+}
+.footer a{
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+}

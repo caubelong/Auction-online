@@ -1,0 +1,109 @@
+<?php
+require_once('database.php');
+$errors = [];
+
+function isFormValidated(){
+    global $errors;
+    return count($errors) == 0;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+    if (empty($_POST['Name'])){
+        $errors[] = 'Name Title is required';
+    }
+
+    if (empty($_POST['Password'])){
+        $errors[] = 'Password is required';
+    }
+    
+    if (empty($_POST['Email'])){
+        $errors[] = 'Email is required';
+    }
+    if(!filter_var($_POST['Email'],FILTER_VALIDATE_EMAIL)){
+        $errors[] = 'Email is required';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Create New Admin</title>
+    <style>
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: #FF0000;
+        }
+        div.error{
+            border: thin solid red; 
+            display: inline-block;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && !isFormValidated()): ?> 
+        <div class="error">
+            <span> Please fix the following errors </span>
+            <ul>
+                <?php
+                foreach ($errors as $key => $value){
+                    if (!empty($value)){
+                        echo '<li>', $value, '</li>';
+                    }
+                }
+                ?>
+            </ul>
+        </div><br><br>
+    <?php endif; ?>
+    
+    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+        <label for="Name">Name</label> <!--required-->
+        <input type="text" id="Name" name="Name"  
+        value="<?php echo isFormValidated()? '': $_POST['Name'] ?>">
+        <br><br>
+        <label for="Password">Password</label> <!--required-->
+        <input type="password" id="Password" name="Password"
+        value="<?php echo isFormValidated()? '': $_POST['Password'] ?>">
+        <br><br>
+        <label for="Email">Email</label> <!--required-->
+        <input type="text" id="Email" name="Email"  
+        value="<?php echo isFormValidated()? '': $_POST['Email'] ?>">
+        <br><br>
+        
+        <input type="submit" value="Đăng ký" />
+            <input type="reset" value="Nhập lại" />
+    
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && isFormValidated()): ?> 
+        <?php 
+        $Admin = [];
+        $Admin['Name'] = $_POST['Name'];
+        $Admin['Password'] = $_POST['Password'];
+        $Admin['Email'] = $_POST['Email'];
+        $result = insert_Admin($Admin);
+        $newAdminId = mysqli_insert_id($db);
+        ?>
+        <h2>A new Admin (ID: <?php echo $newAdminId ?>) has been created:</h2>
+        <ul>
+        <?php 
+            foreach ($_POST as $key => $value) {
+                if ($key == 'submit') continue;
+                if(!empty($value)) echo '<li>', $key.': '.$value, '</li>';
+            }        
+        ?>
+        </ul>
+    <?php endif; ?>
+    <br><br>
+    <a href="index_admin.php">Back</a>
+</body>
+</html>
+
+
+<?php
+db_disconnect($db);
+?>

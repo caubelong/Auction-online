@@ -1,0 +1,136 @@
+<?php
+require_once('database.php');
+require_once('functions.php');
+
+$errors = [];
+
+function isFormValidated(){
+    global $errors;
+    return count($errors) == 0;
+}
+
+function checkForm(){
+    global $errors;
+    if (empty($_POST['Name'])){
+        $errors[] = 'Name  is required';
+    }
+
+    if (empty($_POST['Password'])){
+        $errors[] = 'Password is required';
+    }
+    
+    if (empty($_POST['Email'])){
+        $errors[] = 'Email is required';
+    }
+    if(!filter_var($_POST['Email'],FILTER_VALIDATE_EMAIL)){
+        $errors[] = 'Email is required';
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+    checkForm();
+    if (isFormValidated()){
+        $Admin = [];
+        $Admin['id'] = $_POST['id'];
+        $Admin['Name'] = $_POST['Name'];
+        $Admin['Password'] = md5($_POST['Password']);
+        $Admin['Email'] = $_POST['Email'];
+        update_Admin($Admin);
+        redirect_to('index_admin.php');
+    }
+} else { 
+    if(!isset($_GET['id'])) {
+        redirect_to('index_admin.php');
+    }
+    $id = $_GET['id'];
+    $Admin = find_Admin_by_id($id);
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Edit Admin</title>
+    <style>
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: #FF0000;
+        }
+        div.error{
+            border: thin solid red; 
+            display: inline-block;
+            padding: 5px;
+        }
+    </style>
+    <link rel="shortcut icon" type="image/png" href="http://localhost:81/PROJECT_C1908G/svn/admin/Login/admin.ico"/>
+    <link rel="stylesheet" href="bs4/bootstrap.min.css">
+    <link rel="stylesheet" href="style_admin.css" type="text/css">
+</head>
+<body>
+<div class="container">
+<?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && !isFormValidated()): ?> 
+        <div class="alert alert-danger">
+            <strong>Please fix the following errors!</strong> 
+            <ul>
+                <?php
+                foreach ($errors as $key => $value){
+                    if (!empty($value)){
+                        echo '<li>', $value, '</li>';
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    
+    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post" class="alert alert-danger">
+        <fieldset>
+            <h3>Update admin</h3>
+        </fieldset>
+        <input type="hidden" name="id" 
+        value="<?php echo isFormValidated()? $Admin['id']: $_POST['id'] ?>" >
+
+        <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" id="Name" name="Name"  
+        value="<?php echo isFormValidated()? $Admin['Name']: $_POST['Name'] ?>">
+    </div>
+  </div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Password</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="password" id="Password" name="Password"  
+        value="<?php echo isFormValidated()? $Admin['Password']: $_POST['Password'] ?>">
+    </div>
+  </div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" id="Email" name="Email"  
+        value="<?php echo isFormValidated()? $Admin['Email']: $_POST['Email'] ?>">
+
+        &nbsp;&nbsp;&nbsp;<button  style="margin-top: 10px;margin-left: -15px" type="submit" class="btn btn-success">Sumbit</button> &nbsp; &nbsp; &nbsp; &nbsp;
+        <button  style="margin-top: 10px;margin-left: -10px" type="reset" class="btn btn-info">Reset</button>
+        <div style="margin-top: 15px"><a href="index_admin.php">Back index Admin</a></div>
+    </div>
+  </div>
+        </div>
+    
+    </form>
+    
+    <br><br>
+    <script src="bootstrap.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
+</body>
+</html>
+
+
+<?php
+db_disconnect($db);
+?>

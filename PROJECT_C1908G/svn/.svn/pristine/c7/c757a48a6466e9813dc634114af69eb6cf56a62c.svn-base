@@ -1,0 +1,141 @@
+<?php
+require_once("lib_admin/database.php");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage</title>
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <link href="bs4/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<?php
+$link_img = "upload_img/";
+if (isset($_SESSION['new_product_sucsses'])) {
+    echo $_SESSION['new_product_sucsses'];
+}
+?>
+<?php include_once "lib_admin/header.php" ?>
+<div> &nbsp;</div>
+<div class="container-fluid">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Picture</th>
+            <th>&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <?php if (isset($_POST['sm_search'])):
+            $name_search = "";
+            $cat_search=$_POST['search'];
+            if($name_search=="đồ cổ"){
+                $cat_search=1;
+            }elseif ($name_search=="đồ trang sức"){
+                $cat_search=2;
+            }elseif ($name_search=="đồ điện tử"){
+                $cat_search=3;
+            }elseif ($name_search=="đồ nội thất"){
+                $cat_search=4;
+            }else{
+                $name_search=$_POST['search'];
+                $cat_search=5;
+            }
+            $sql = "SELECT * FROM product WHERE NAME LIKE '%".$name_search ."%'";
+            $sql.="OR categoryId='".$name_search."'";
+            $query = mysqli_query($db, $sql);
+            $count = mysqli_num_rows($query);
+            for ($i = 0; $i < $count; $i++) :
+                $search = mysqli_fetch_assoc($query);
+                if ($search['CategoryID'] == 1) {
+                    $product['CategoryID'] = "Đồ cổ";
+                } else if ($search['CategoryID'] == 2) {
+                    $search['CategoryID'] = "Đồ trang sức";
+                } else if ($search['CategoryID'] == 3) {
+                    $search['CategoryID'] = "Đồ điện tử";
+                } else if ($search['CategoryID'] == 4) {
+                    $search['CategoryID'] = "Đồ nội thất";
+                } else {
+                    $search['CategoryID'] = "Phương tiện";
+                }
+            ?>
+        <tr>
+            <td><?php echo $search['NAME']; ?></td>
+            <td><?php echo $search['CategoryID']; ?></td>
+            <td><?php echo $search['Price']; ?></td>
+            <td><?php echo $search['DESCRIPTION']; ?></td>
+            <td>
+                <div class="text-center">
+                    <img class="img-fluid" style="width: 200px;height: 150px"
+                         src="<?php echo $link_img . $search['Picture']; ?>"
+                </div>
+            </td>
+            <td>&nbsp;</td>
+            <td><a href="<?php echo 'edit_product.php?ProductId=' . $search['ProductId']; ?>">Edit</a></td>
+            <td><a href="<?php echo 'delete_product.php?ProductId=' . $search['ProductId']; ?>">delete</a></td>
+        </tr>
+        <?php endfor; ?>
+        <?php endif; ?>
+        <?php if (!isset($_POST['sm_search'])):
+            $sql = "SELECT * FROM product";
+            $result = mysqli_query($db, $sql);
+            $count = mysqli_num_rows($result);
+            for ($i = 0; $i < $count; $i++):
+                $product = mysqli_fetch_assoc($result);
+                if ($product['CategoryID'] == 1) {
+                    $product['CategoryID'] = "Đồ cổ";
+                } else if ($product['CategoryID'] == 2) {
+                    $product['CategoryID'] = "Đồ trang sức";
+                } else if ($product['CategoryID'] == 3) {
+                    $product['CategoryID'] = "Đồ điện tử";
+                } else if ($product['CategoryID'] == 4) {
+                    $product['CategoryID'] = "Đồ nội thất";
+                } else {
+                    $product['CategoryID'] = "Phương tiện";
+                }
+                ?>
+
+                <tr>
+                    <td><?php echo $product['NAME']; ?></td>
+                    <td><?php echo $product['CategoryID']; ?></td>
+                    <td><?php echo $product['Price']; ?></td>
+                    <td><?php echo $product['DESCRIPTION']; ?></td>
+                    <td>
+                        <div class="text-center">
+                            <img class="img-fluid" style="width: 200px;height: 150px"
+                                 src="<?php echo $link_img . $product['Picture']; ?>"
+                        </div>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><a href="<?php echo 'edit_product.php?ProductId=' . $product['ProductId']; ?>">Edit</a></td>
+                    <td><a href="<?php echo 'delete_product.php?ProductId=' . $product['ProductId']; ?>">delete</a></td>
+                </tr>
+            <?php
+            endfor;
+            mysqli_free_result($result);
+            ?>
+        <?php endif; ?>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<script>
+    window.addEventListener('beforeunload', function (e) {
+        <?php  $_SESSION['new_product_sucsses'] = '' ?>;
+    });
+</script>
+<script src="bs4/jquery-3.4.1.min.js"></script>
+<script src="bs4/bootstrap.min.js"></script>
+</body>
+</html>

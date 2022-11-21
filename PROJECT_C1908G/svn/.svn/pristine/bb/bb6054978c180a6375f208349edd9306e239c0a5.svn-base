@@ -1,0 +1,143 @@
+<?php
+require_once ("lib_admin/database.php");
+$err = [];
+function checkForm()
+{
+    global $err;
+    return count($err) == 0;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (empty($_POST['name'])) {
+        $err[] = " product name is not empty";
+    }
+    if (empty($_POST['price'])) {
+        $err[] = "price is not empty";
+    }
+    if (empty($_POST['categoryId'])) {
+        $err[] = "categoryId is not empty";
+    }
+    if (empty($_POST['description'])) {
+        $err[] = "description is not empty";
+    }
+    if (!is_numeric($_POST['price'])) {
+        $err[] = "price is not text";
+    }
+    if(empty($_FILES['fileUpload']['tmp_name'])){
+        $err[]="images is not empty";
+    }
+}
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>New Product</title>
+    <link href="bs4/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<?php
+require_once ("lib_admin/header.php");
+?>
+<?php if ($_SERVER['REQUEST_METHOD'] == "POST" && !checkForm()): ?>
+    <div class="err">
+        <span class="err">fix loi sau de tiep tuc</span>
+        <ul>
+            <?php
+            foreach ($err as $key => $value) {
+                if (!empty($value)) {
+                    echo "<li>" . $value . "</li>";
+                }
+            }
+            ?>
+        </ul>
+    </div> <?php endif; ?>
+<?php
+$sql = "SELECT *FROM category";
+$result = mysqli_query($db, $sql);
+$_product = mysqli_fetch_assoc($result);
+$link_img="upload_img/";
+?>
+<div class="container-fluid">
+    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Product Name : </label>
+            <input type="text" class="form-control" placeholder="product name" name="name"
+                   value="<?php echo checkForm() ? "" : $_POST['name'] ?>">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Price : </label>
+            <input type="text" class="form-control" placeholder="price" name="price"
+                   value="<?php echo checkForm() ? "" : $_POST['price'] ?>">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Category :</label>
+            <select class="form-control" name="categoryId">
+                <?php
+                $sql="SELECT *FROM category";
+                $cat=mysqli_query($db,$sql);
+                ?>
+                <?php
+                if(mysqli_num_rows($result)>0){
+                    while ($result=mysqli_fetch_assoc($cat)){
+                        $cat_name=$result['Name'];
+                        echo "<option value='$cat_name'>$cat_name</option>";
+                    }
+                }
+                ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Description :</label>
+            <input class="form-control" rows="3" placeholder="description" name="description"
+                     value="<?php echo checkForm() ? "" : $_POST['description'] ?>"></input>
+        </div>
+        <label for="exampleFormControlFile1">Picture upload : </label>
+        <input type="file" class="btn btn-outline-info" name="fileUpload">
+        <div class="form-group">
+            <input name="submit" class="btn btn-outline-info" value="submit" type="submit">
+        </div>
+    </form>
+</div>
+<?php if ($_SERVER['REQUEST_METHOD'] == "POST" && checkForm()): ?>
+    <?php
+    $_product = [];
+    $name = $_product['name'] = mysqli_real_escape_string($db, $_POST['name']);
+    $price = (float)$_product['name'] = mysqli_real_escape_string($db, $_POST['price']);
+    $description = $_product['name'] = mysqli_real_escape_string($db, $_POST['description']);
+    if ($_POST['categoryId'] == "Đồ cổ") {
+        $_POST['categoryId'] = 1;
+    } else if ($_POST['categoryId'] == "Đồ Trang Sức") {
+        $_POST['categoryId'] = 2;
+    } else if ($_POST['categoryId'] == "Đồ Điện Tử") {
+        $_POST['categoryId'] = 3;
+    } else if ($_POST['categoryId'] == "Đồ Nội Thất") {
+        $_POST['categoryId'] = 4;
+    } else if ($_POST['categoryId']== "Phương Tiện"){
+        $_POST['categoryId'] = 5;
+    }
+    $fileName=$_FILES["fileUpload"]['name'];
+    $fileTmp_name=$_FILES['fileUpload']['tmp_name'];
+    $fileDestination="upload_img/".$fileName;
+    move_uploaded_file($fileTmp_name,$fileDestination);
+    $sql = "INSERT INTO product(Name,description,categoryId,price,picture)";
+    $sql .= "VALUES(";
+    $sql .= "'" . $name . "',";
+    $sql .= "'" . $description . "',";
+    $sql .= "'" . $_POST['categoryId'] . "',";
+    $sql .= "'" . $price . "',";
+    $sql .= "'" . $_FILES['fileUpload']['name'] . "'";
+    $sql .= ")";
+    $resul = mysqli_query($db, $sql);
+    echo "<h3>" . "Crete new product Name :" . $name . " price : " .$price . "</h3>";
+    echo mysqli_error($db);
+endif; ?>
+<a href="product_index.php">Back to index</a>
+<img src=""
+</body>
+<script src="bs4/jquery-3.4.1.min.js"></script>
+<script src="bs4/bootstrap.min.js"></script>
+</html>

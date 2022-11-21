@@ -1,0 +1,7 @@
+/*index admin*/
+span.list-group-item {
+    margin-top: 10px;
+}
+table.table.table-striped.table-dark {
+    margin-top: 10px;
+}

@@ -1,0 +1,63 @@
+<?php
+
+require_once('database.php');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Category</title>
+    <style>
+        table {
+        border-collapse: collapse;
+        vertical-align: top;
+        }
+
+        table.list {
+        width: 80%;
+        }
+
+        table.list tr td {
+        border: 1px solid #999999;
+        
+        }
+
+        table.list tr th {
+        border: 1px solid #000;
+        background: #A8D4FF;
+        color: white;
+        text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <a href="new.php">Create Category</a> <br><br>
+    <table class="list">
+        <tr>
+            <th>Name</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+  	    </tr>
+
+        <?php  
+        $category_set = find_all_categorys();
+        $count = mysqli_num_rows($category_set);
+        for ($i = 0; $i < $count; $i++):
+            $category = mysqli_fetch_assoc($category_set);
+        ?>
+            <tr>
+                <td><?php echo $category['Name']; ?></td>
+                <td><a href="<?php echo 'edit_admin.php?id='.$category['CategoryID']; ?>">Edit</a></td>
+                <td><a href="<?php echo 'delete.php?id='.$category['CategoryID']  ; ?>">Delete</a></td>
+            </tr>
+        <?php 
+        endfor; 
+        mysqli_free_result($category_set);
+        ?>
+    </table>
+    <a href="http://localhost:81/project_product/admin/Login/index_admin.php">Back to Admin Manage</a>
+</body>
+</html>
+<?php
+db_disconnect($db);
+?>

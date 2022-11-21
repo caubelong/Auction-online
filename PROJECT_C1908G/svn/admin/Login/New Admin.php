@@ -1,0 +1,131 @@
+<?php
+require_once('database.php');
+$errors = [];
+
+function isFormValidated(){
+    global $errors;
+    return count($errors) == 0;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+    if (empty($_POST['Name'])){
+        $errors[] = 'Name Title is required';
+    }
+
+    if (empty($_POST['Password'])){
+        $errors[] = 'Password is required';
+    }
+    
+    if (empty($_POST['Email'])){
+        $errors[] = 'Email is required';
+    }
+    if(!filter_var($_POST['Email'],FILTER_VALIDATE_EMAIL)){
+        $errors[] = 'Email is required';
+    }
+    
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Create New Admin</title>
+    <style>
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: #FF0000;
+        }
+        div.error{
+            border: thin solid red; 
+            display: inline-block;
+            padding: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="bs4/bootstrap.min.css">
+    <link rel="stylesheet" href="style_admin.css" type="text/css">
+</head>
+<body>
+
+<div class="container">
+    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && !isFormValidated()): ?> 
+        <div class="alert alert-danger">
+            <strong>Please fix the following errors!</strong> 
+            <ul>
+                <?php
+                foreach ($errors as $key => $value){
+                    if (!empty($value)){
+                        echo '<li>', $value, '</li>';
+                    }
+                }
+                ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post" class="alert alert-danger" >
+        <h3>CREATE NEW ADMIN</h3>
+    <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-3">
+      <input class="form-control" id="Name" type="text" name="Name" value="<?php echo isFormValidated()? '': $_POST['Name'] ?>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Password</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="password" id="Password" name="Password"
+        value="<?php echo isFormValidated()? '': $_POST['Password'] ?>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" id="Email" name="Email"  
+        value="<?php echo isFormValidated()? '': $_POST['Email'] ?>">
+    </div>
+  </div>
+<div class="container">
+&nbsp;&nbsp;&nbsp;<button style="margin-left: -15px" type="submit" class="btn btn-success">Đăng ký</button> &nbsp; &nbsp; &nbsp; &nbsp;
+<button type="reset" class="btn btn-info">Nhập lại</button>
+    <div style="margin-top: 10px"><a href="index_admin.php">Back to index</a></div>
+</div>
+    
+    </form>
+    </div>
+    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && isFormValidated()): ?> 
+        <?php 
+        $Admin = [];
+        $Admin['Name'] = $_POST['Name'];
+        $Admin['Password'] = md5($_POST['Password']);
+        $Admin['Email'] = $_POST['Email'];
+        $result = insert_Admin($Admin);
+        $newAdminId = mysqli_insert_id($db);
+        ?>
+        <div class="container">
+        <div class="alert alert-success">
+        <strong>Success!</strong>
+        <h2>A new Admin (ID: <?php echo $newAdminId ?>) has been created:</h2>
+        <ul>
+        <?php 
+            foreach ($_POST as $key => $value) {
+                if ($key == 'submit') continue;
+                if(!empty($value)) echo '<li>', $key.': '.$value, '</li>';
+            }        
+        ?>
+        </ul>
+        </div>
+        </div>
+    <?php endif; ?>
+    <br><br>
+    <script src="bootstrap.min.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
+</body>
+</html>
+
+
+<?php
+db_disconnect($db);
+?>

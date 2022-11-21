@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c39b2a81-9cd9-4292-be3a-d746b9269780" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1eiP28i9hkVn0uo8hi2adDmkVTZ" />
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/svn/User_2/Homepage" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\admin\Login\product" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\User\home 2 fix\" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\admin\Login\product\" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\admin\Login\lib_admin" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\User_2\Homepage" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\admin\Login\product" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\admin\Login\category" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\User\home 2 fix" />
+      <recent name="C:\xampp\htdocs\PROJECT_C1908G\svn\User" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c39b2a81-9cd9-4292-be3a-d746b9269780" name="Default Changelist" comment="" />
+      <created>1594801229903</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594801229903</updated>
+      <workItem from="1594801231139" duration="7264000" />
+      <workItem from="1594818346346" duration="750000" />
+      <workItem from="1594819281849" duration="10519000" />
+      <workItem from="1594833173200" duration="52000" />
+      <workItem from="1594870264656" duration="355000" />
+      <workItem from="1594870779380" duration="2497000" />
+      <workItem from="1594873656030" duration="720000" />
+      <workItem from="1595065909726" duration="45000" />
+      <workItem from="1595337514203" duration="3586000" />
+      <workItem from="1595390629297" duration="12915000" />
+      <workItem from="1595412955786" duration="12512000" />
+      <workItem from="1595431241101" duration="3568000" />
+      <workItem from="1595466442250" duration="6845000" />
+      <workItem from="1595495799564" duration="3407000" />
+      <workItem from="1595511725165" duration="1195000" />
+      <workItem from="1595569169017" duration="4425000" />
+      <workItem from="1595654873340" duration="7874000" />
+      <workItem from="1595662925540" duration="2718000" />
+      <workItem from="1595675090162" duration="10110000" />
+      <workItem from="1595736156253" duration="10848000" />
+      <workItem from="1595747873102" duration="5679000" />
+      <workItem from="1595770755914" duration="2122000" />
+      <workItem from="1595773867412" duration="924000" />
+      <workItem from="1595783103864" duration="564000" />
+      <workItem from="1595783714230" duration="888000" />
+      <workItem from="1595807204278" duration="188000" />
+      <workItem from="1595813626764" duration="4941000" />
+      <workItem from="1595956272312" duration="347000" />
+      <workItem from="1596007328726" duration="132000" />
+      <workItem from="1596007569581" duration="15856000" />
+      <workItem from="1596041606475" duration="534000" />
+      <workItem from="1596071919075" duration="4619000" />
+      <workItem from="1596118419519" duration="4117000" />
+      <workItem from="1596129689221" duration="935000" />
+      <workItem from="1596201727101" duration="9789000" />
+      <workItem from="1596212834865" duration="543000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

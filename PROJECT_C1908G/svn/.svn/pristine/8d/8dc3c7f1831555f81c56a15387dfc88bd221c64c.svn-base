@@ -1,0 +1,94 @@
+<?php
+require_once('database.php');
+
+$errors = [];
+
+function isFormValidated(){
+    global $errors;
+    return count($errors) == 0;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+    if (empty($_POST['Name'])){
+        $errors[] = 'Name is required';
+    }
+
+    if (empty($_POST['Password'])){
+        $errors[] = 'Password is required';
+    }
+     $myusername = mysqli_real_escape_string($db,$_POST['Name']);
+     $mypassword = mysqli_real_escape_string($db,$_POST['Password']);
+     $hash="asss";
+      $sql = "SELECT * FROM Admin WHERE Name = '$myusername'";
+      $result = mysqli_query($db,$sql);
+      $count = mysqli_num_rows($result);
+      if($count <1) {
+          $errors[] = 'Your Login Name or Password is invalid';
+      }else {
+          $user=mysqli_fetch_assoc($result);
+      }
+    $pw_hash=password_verify($mypassword,$user['Password']);
+    if(!$pw_hash){
+        $validPassword = password_verify(md5($mypassword), $user['Password']);
+        $errors[]="pwsai";
+    }if ($validPassword){
+        $_SESSION['user_login'] = "<span>" . $myusername . "</span>";
+        dedirec_to("index_admin.php");
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <style>
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: #FF0000;
+        }
+        div.error{
+            border: thin solid red;
+            display: inline-block;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST' && !isFormValidated()): ?>
+        <div class="error">
+            <span> Please fix the following errors </span>
+            <ul>
+                <?php
+                foreach ($errors as $key => $value){
+                    if (!empty($value)){
+                        echo '<li>', $value, '</li>';
+                    }
+                }
+                ?>
+            </ul>
+        </div><br><br>
+    <?php endif; ?>
+
+    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+        <label for="Name">Name</label>
+        <input type="text" id="Name" name="Name"
+        value="<?php echo isFormValidated()? '': $_POST['Name'] ?>">
+        <br><br>
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password"
+        value="<?php echo isFormValidated()? '': $_POST['Password'] ?>">
+        <br><br>
+        <input name="btn_submit" type="submit" value="Đăng nhập">
+    </form>
+</body>
+</html>
+
+<?php
+db_disconnect($db);
+?>
+ 
